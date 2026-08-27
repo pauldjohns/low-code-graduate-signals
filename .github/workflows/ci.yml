@@ -1,0 +1,35 @@
+name: CI
+
+# Runs on every push to main and every PR. The pipeline mutates a LIVE cold-email sender,
+# so this gate guards the two things a bad change breaks: the segment scorer (who gets
+# emailed) and the send dedup (nobody emailed twice). Tests are offline — no Gmail auth,
+# no network — so CI needs no secrets and no pip install.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Syntax-check every pipeline module
+        run: python -m compileall -q pipeline
+
+      - name: Offline unit tests (scorer, send dedup, conversion attribution)
+        # test_send.py is a LIVE Gmail smoke test (sends a real email, needs a token) — never in CI.
+        run: |
+          fail=0
+          for t in pipeline/test_*.py; do
+            [ "$t" = "pipeline/test_send.py" ] && continue
+            echo "== $t =="
+            python3 "$t" || fail=1
+          done
+          exit $fail

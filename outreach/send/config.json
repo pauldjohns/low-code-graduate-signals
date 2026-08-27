@@ -1,0 +1,55 @@
+{
+  "_comment": "Public copy of the shipped config. Ships disarmed: dry_run true and template_approved false, with a placeholder identity. Nothing sends until all three are set deliberately. Outreach sender config. Going live needs THREE deliberate flips: dry_run:false AND template_approved:true AND real copy in the template (no [PLACEHOLDER]). Any one missing = no live send. See method/AUTOSEND.md.",
+  "dry_run": true,
+  "template_approved": false,
+  "from_address": "sender@example.com",
+  "from_name": "Your Name",
+  "reply_to": "sender@example.com",
+  "worklist": "outreach/worklist_ceiling.csv",
+  "template": "outreach/send/templates/ceiling_b.md",
+  "segments": [
+    "B_all_bot",
+    "A_hybrid",
+    "C_mover",
+    "presumed_silent_graduate"
+  ],
+  "require_email_valid": true,
+  "skip_role_addresses": true,
+  "region_gate": true,
+  "tz_scheduler": true,
+  "default_timezone": "America/New_York",
+  "target_hour": 9,
+  "window_before_hours": 1,
+  "window_after_hours": 2,
+  "runner_cadence_minutes": 30,
+  "daily_cap": 100,
+  "jitter_seconds": [
+    90,
+    240
+  ],
+  "send_windows": [
+    [
+      "08:00",
+      "17:00"
+    ]
+  ],
+  "_send_windows_note": "dead when tz_scheduler:true (per-recipient local morning replaces it); kept for one-flag rollback",
+  "breaker_enabled": false,
+  "_breaker_note": "The automatic halt ships disabled, with pre-send mailbox verification and the adaptive throttle as the controls instead. Bounces are still scanned and hard-bounced addresses are still suppressed. Set breaker_enabled true if you would rather have a hard stop.",
+  "bounce_rate_halt": 0.06,
+  "bounce_window": 100,
+  "bounce_burst": [
+    4,
+    10
+  ],
+  "adaptive_throttle": false,
+  "throttle_window": 100,
+  "throttle_min_n": 40,
+  "_throttle_note": "Ships disabled, with mailbox verification running pre-send as the control instead. Note what that means: with breaker_enabled false and this false, there is no bounce-rate-driven brake, and STOP/HALT are the only stops. Tiers live in THROTTLE_TIERS in send_outreach.py, so re-enabling is one key. Decide deliberately - an unbraked cold stream is how a sending domain gets burned.",
+  "verify_enabled": true,
+  "verify_max_per_run": 150,
+  "require_verified": true,
+  "_require_verified_note": "When the breaker and the throttle are both off, verification is the only bounce control, so an unverified row must not be sendable - otherwise 'verification is the control' is a claim with nothing behind it.",
+  "_verify_note": "Bouncer mailbox verification, run by pipeline/verify_queue.py as its own chain step BEFORE the send. Ships false: do the one-off pass over the existing queue by hand and review it before flipping this true (method/VERIFY-INTEGRATION.md §7). Needs BOUNCER_API_KEY in ~/.config/lovable-outreach/verify.env, mode 600. Only 'undeliverable' is terminal; risky / unknown / deliverable-on-an-accept-all-domain are recorded and stay sendable so the harder rules get set from this campaign's own bounce outcomes. No verify_cull_esps here: this worklist has no esp column (GitHub sourcing yields personal/freemail, not corporate gateways).",
+  "_daily_cap_note": "Flat cap, no ramp, on the assumption the sending inbox is already warmed. Lower it after any bounce spike and raise it back deliberately; a cap restored on the same day as an incident is not a decision, it is a reflex."
+}

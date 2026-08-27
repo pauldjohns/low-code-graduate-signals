@@ -1,0 +1,54 @@
+# Lead data. Every file here identifies real people - repo owners, their commit emails, their
+# social handles - or records mail sent to them. Machine-local, in no repo, public or private.
+# examples/ carries synthetic rows with the same column contract.
+leads/
+store/
+analysis/
+data/
+archive/logs/
+outreach/worklist_*.csv
+outreach/dashboard.html
+outreach/send/send_log.csv
+outreach/send/bounces.csv
+outreach/send/suppression.csv
+outreach/send/psg_holdback.csv
+outreach/send/metrics.json
+outreach/send/dryrun/
+
+# Gmail OAuth secrets - NEVER commit these
+outreach/.gmail/
+.gmail/
+*.env
+client_secret*.json
+token*.json
+
+# Send-system control / scratch (machine-local)
+outreach/send/STOP
+outreach/send/HALT
+outreach/send/LOOP_STOP
+outreach/send/chain.log
+outreach/send/.send.lock
+outreach/send/.chain.lock
+outreach/send/.chain.lock.d/
+outreach/send/.last_poll
+outreach/send/.last_metrics
+outreach/send/.loop.pid
+
+# scratch / regenerable
+archive/work/
+.firecrawl/
+*.DS_Store
+*.gsheet
+__pycache__/
+*.pyc
+
+# Belt and braces: these filenames hold lead data wherever they are written.
+*.duckdb
+worklist*.csv
+candidates*.csv
+*_seen.csv
+send_log.csv
+bounces.csv
+suppression.csv
+metrics.json
+!examples/*.csv
