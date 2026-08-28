@@ -8,7 +8,7 @@ against that campaign's six known bounces, which say nothing about this list.
 Key, mode 600, outside the repo. Lookup order (first hit wins):
 
   1. the BOUNCER_API_KEY environment variable
-  2. ~/.config/lovable-outreach/verify.env   engine-local override; does not exist today
+  2. ~/.config/graduate-signals/verify.env   engine-local override; does not exist today
   3. ~/.config/shared-outreach/verify.env    the SHARED secrets dir, where the key actually lives
                                              (alongside apollo.env and the Google OAuth files)
 
@@ -16,7 +16,7 @@ the operator, 2026-07-27: point this engine at the shared file rather than minti
 **Bouncer credits are per-key, so a duplicate splits the usage accounting.**
 
 This deliberately overrides method/VERIFY-INTEGRATION.md §2, which said to use a separate
-~/.config/lovable-outreach/ dir by analogy with the split Gmail token dirs. That analogy does not
+~/.config/graduate-signals/ dir by analogy with the split Gmail token dirs. That analogy does not
 hold: the split exists because `go.sh` does `rm -f "$TOKEN"` on re-consent, and TOKEN is the
 token.json path specifically — verify.env was never in its blast radius. Slot 2 is kept ahead of
 slot 3 so the engines can be split later by dropping a file in, with no code change.
@@ -26,7 +26,7 @@ directly, so a `set -a; . verify.env; set +a` in an interactive shell never reac
 """
 import json, os, time, urllib.error, urllib.parse, urllib.request
 
-ENV_CANDIDATES = [os.path.expanduser("~/.config/lovable-outreach/verify.env"),
+ENV_CANDIDATES = [os.path.expanduser("~/.config/graduate-signals/verify.env"),
                   os.path.expanduser("~/.config/shared-outreach/verify.env")]
 ENV = ENV_CANDIDATES[-1]          # the one in use today, for error messages
 

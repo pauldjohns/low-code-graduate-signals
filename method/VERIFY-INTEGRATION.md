@@ -37,14 +37,14 @@ Source of the pattern, all in the sibling campaign's repo:
 ```
 
   **Superseded, 2026-07-27 (a configuration choice).** This section originally said to mint a second key in a
-  separate `~/.config/lovable-outreach/` dir, by analogy with the split Gmail token dirs. Both
+  separate `~/.config/graduate-signals/` dir, by analogy with the split Gmail token dirs. Both
   halves of that were wrong:
   - **Bouncer credits are per-key**, so a duplicate key splits the usage accounting for no benefit.
   - The Gmail analogy does not transfer. The token dirs are split because `go.sh` runs
     `rm -f "$TOKEN"` on re-consent — and `TOKEN` is the `token.json` path specifically, so
     `verify.env` was never at risk from it.
 
-  `verify_bouncer.load_key()` resolves `$BOUNCER_API_KEY` → `~/.config/lovable-outreach/verify.env`
+  `verify_bouncer.load_key()` resolves `$BOUNCER_API_KEY` → `~/.config/graduate-signals/verify.env`
   → `~/.config/shared-outreach/verify.env`, first hit wins. The engine-local path is checked first
   and does not exist, so the engines can still be split later by dropping a file in — no code
   change. The lookup must stay in Python: `run_chain.sh` invokes `verify_queue.py` directly, so a

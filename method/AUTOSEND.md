@@ -43,7 +43,7 @@ engine_loop.sh (every 30 min) ── mkdir lock (whole-cycle) ── run_chain.s
 | `pipeline/gmail_auth.py` | Gmail auth (OAuth, creds in `~/.config/outreach-engine/`) + `send()` primitive. |
 | `pipeline/validate_emails.py` | pre-send syntax + MX + disposable cull (the `email_valid` gate). Proves the DOMAIN accepts mail. |
 | `pipeline/verify_queue.py` | pre-send Bouncer MAILBOX check, its own chain step. Only `undeliverable` is terminal. Dry-run default. |
-| `pipeline/verify_bouncer.py` | the Bouncer adapter (key from `~/.config/lovable-outreach/verify.env`). |
+| `pipeline/verify_bouncer.py` | the Bouncer adapter (key from `~/.config/graduate-signals/verify.env`). |
 | `pipeline/run_chain.sh` | one cycle; mkdir lock (PID-liveness + 8h backstop) so cycles can't overlap; honors STOP/HALT. |
 | `pipeline/engine_loop.sh` | the "server": run_chain every 30 min, detached (nohup) from a granted shell. macOS TCC blocks a launchd timer from reading ~/Documents, so the chain is a loop, not a launchd job. |
 | `outreach/send/config.json` | all knobs (identity, caps, jitter, windows, breaker thresholds, segments, dry_run, template_approved). |
@@ -128,7 +128,7 @@ are per-key, and a duplicate splits the usage accounting (a configuration choice
 ```
 ~/.config/shared-outreach/verify.env     BOUNCER_API_KEY=...
 ```
-`verify_bouncer.load_key()` resolves `$BOUNCER_API_KEY` → `~/.config/lovable-outreach/verify.env`
+`verify_bouncer.load_key()` resolves `$BOUNCER_API_KEY` → `~/.config/graduate-signals/verify.env`
 (engine-local override, absent today) → `~/.config/shared-outreach/verify.env`. Splitting the
 engines later is a matter of creating the first file; no code change.
 
