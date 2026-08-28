@@ -55,6 +55,7 @@ build_metrics.py  sends, replies, signups attributed back to a repo
 
 ```bash
 pip install -r pipeline/requirements-send.txt
+cp .env.example .env      # then fill it in - it is gitignored
 ```
 
 1. A GitHub personal access token (read-only, public-repo scope) as `GITHUB_TOKEN`. Without one the
